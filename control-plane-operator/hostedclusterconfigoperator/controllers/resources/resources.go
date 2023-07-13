@@ -1612,44 +1612,44 @@ func (r *reconciler) ensureCloudResourcesDestroyed(ctx context.Context, hcp *hyp
 	}
 	var errs []error
 	log.Info("Ensuring image registry storage is removed")
-	removed, err := r.ensureImageRegistryStorageRemoved(ctx)
-	if err != nil {
+	if removed, err := r.ensureImageRegistryStorageRemoved(ctx); err != nil {
 		errs = append(errs, err)
-	}
-	if !removed {
-		remaining.Insert("image-registry")
 	} else {
-		log.Info("Image registry is removed")
+		if !removed {
+			remaining.Insert("image-registry")
+		} else {
+			log.Info("Image registry is removed")
+		}
 	}
 	log.Info("Ensuring ingress controllers are removed")
-	removed, err = r.ensureIngressControllersRemoved(ctx, hcp)
-	if err != nil {
+	if removed, err := r.ensureIngressControllersRemoved(ctx, hcp); err != nil {
 		errs = append(errs, err)
-	}
-	if !removed {
-		remaining.Insert("ingress-controllers")
 	} else {
-		log.Info("Ingress controllers are removed")
+		if !removed {
+			remaining.Insert("ingress-controllers")
+		} else {
+			log.Info("Ingress controllers are removed")
+		}
 	}
 	log.Info("Ensuring load balancers are removed")
-	removed, err = r.ensureServiceLoadBalancersRemoved(ctx)
-	if err != nil {
+	if removed, err := r.ensureServiceLoadBalancersRemoved(ctx); err != nil {
 		errs = append(errs, err)
-	}
-	if !removed {
-		remaining.Insert("loadbalancers")
 	} else {
-		log.Info("Load balancers are removed")
+		if !removed {
+			remaining.Insert("loadbalancers")
+		} else {
+			log.Info("Load balancers are removed")
+		}
 	}
 	log.Info("Ensuring persistent volumes are removed")
-	removed, err = r.ensurePersistentVolumesRemoved(ctx)
-	if err != nil {
+	if removed, err := r.ensurePersistentVolumesRemoved(ctx); err != nil {
 		errs = append(errs, err)
-	}
-	if !removed {
-		remaining.Insert("persistent-volumes")
 	} else {
-		log.Info("Persistent volumes are removed")
+		if !removed {
+			remaining.Insert("persistent-volumes")
+		} else {
+			log.Info("Persistent volumes are removed")
+		}
 	}
 
 	return remaining, errors.NewAggregate(errs)
